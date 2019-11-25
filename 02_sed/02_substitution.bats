@@ -69,4 +69,14 @@
 	# Note that the delimiter appears three times and is requir ed after the replacement. Regardless of which delimiter you use, if it does appear in the regular expression, or in the replacement text, use a backslash (\) to escape it.
 	run sed 's!b c \(b\)!@\1@!' <<< $test_string		# Use ! as delimiter
 	[ "$output" == "$expect" ]
+
+
+	# When the pattern is the same as address pattern, it can be omitted.
+	run sed '/b c b/s///' <<< $test_string		# Delete "b c b" from the line containing "b c b"
+	expect=$(cat <<-EOF 
+	a 
+	b c d c
+	EOF
+	)
+	[ "$output" == "$expect" ]
 }
