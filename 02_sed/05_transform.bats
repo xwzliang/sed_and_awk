@@ -8,12 +8,11 @@
 	)
 
 	# Transform y: This command "y/abc/xyz" transforms each character by position in string abc to its equivalent in string xyz
-	run sed '/b c b/y/abc/ABC/' <<< $test_string		# Delete the whole line containing 'b c b'
+	run sed '/b c b/y/abc/ABC/' <<< $test_string		# Capitalize the character of the matching line
 	expect=$(cat <<-EOF 
 	A B C B
 	b c d c
 	EOF
 	)
-	echo "$output"
 	[ "$output" == "$expect" ]
 }
