@@ -99,4 +99,14 @@
 	EOF
 	)
 	[ "$output" == "$expect" ]
+
+	# NR will count all records in all input files instead of current file
+	run awk ' { print "line number " NR " of all files:", $1 } ' {1,2}.tmp
+	expect=$(cat <<-EOF 
+	line number 1 of all files: John
+	line number 2 of all files: Phyllis
+	EOF
+	)
+	[ "$output" == "$expect" ]
+
 }
