@@ -43,9 +43,15 @@
 	[ "$output" == "$expect" ]
 
 
-	# You can define awk function in file and import it as library, but all other scripts are needed to be in file as well, and -f must be used for each script. You cannot put a script on the command line and also use the -f option to specify a filename for a script.
+	# You can define awk function in file and import it as library, but all other scripts are needed to be in file as well, and -f must be used for each script. (gawk can use --source, as discussed later)
 	echo "$awk_insert_function" >awk_insert_function.tmp
 	echo "$awk_script" >awk_script.tmp
 	run awk -f awk_script.tmp -f awk_insert_function.tmp <<< $test_string
+	[ "$output" == "$expect" ]
+
+	# gawk can use --source for script in command line, and -f for library files
+	run gawk --source "$awk_script" -f awk_insert_function.tmp <<< $test_string
+	[ "$output" == "$expect" ]
+	run gawk -f awk_insert_function.tmp --source "$awk_script" <<< $test_string
 	[ "$output" == "$expect" ]
 }
