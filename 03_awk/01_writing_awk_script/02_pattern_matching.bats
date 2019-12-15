@@ -31,4 +31,43 @@
 	)
 	[ "$output" == "$expect" ]
 	# Note that input “4T” was identified as both an integer and a string. A line can match more than one rule. The last line of input "test print default" also matches string and "print" pattern.
+
+	# Use ! to negate the match
+	run awk '!/[4T]/ { print }' <<< "$test_string"
+	expect=$(cat <<-EOF 
+	t
+
+	test print default
+	EOF
+	)
+	[ "$output" == "$expect" ]
+
+	# Use pattern, pattern to address a range of lines, just as sed
+	run awk '/^$/,/test/ { print }' <<< "$test_string"
+	expect=$(cat <<-EOF 
+
+	44
+	test print default
+	EOF
+	)
+	[ "$output" == "$expect" ]
+
+	# Use && and || as logical operations for multiple patterns
+	run awk '!/[4T]/ && !/^$/ { print }' <<< "$test_string"
+	expect=$(cat <<-EOF 
+	t
+	test print default
+	EOF
+	)
+	[ "$output" == "$expect" ]
+
+	# Use the C conditional operator (patter n ? patter n : patter n)
+	run awk '!/[4T]/ ? /test/ : /T/ { print }' <<< "$test_string"
+	expect=$(cat <<-EOF 
+	4T
+	test print default
+	EOF
+	)
+	[ "$output" == "$expect" ]
+
 }
