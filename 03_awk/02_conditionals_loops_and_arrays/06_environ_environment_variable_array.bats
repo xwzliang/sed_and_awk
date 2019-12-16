@@ -25,6 +25,7 @@
 	LANG=en_US.UTF-8
 	EOF
 	)
+	# Gawk allows you to specify an environment variable named AWKPATH that defines a search path for awk program files. Thus, when a filename is specified with the -f option, the two default directories will be searched, beginning with the current directory, then AWKPATH.
 
 	[ "$output" == "$expect" ]
 }
