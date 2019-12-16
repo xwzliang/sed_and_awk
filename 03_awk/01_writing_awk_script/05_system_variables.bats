@@ -20,6 +20,24 @@
 	)
 	[ "$output" == "$expect" ]
 
+	# If the value of FS is the empty string, then each character of the input record becomes a separate field.
+	run awk '
+	BEGIN { FS = "" }
+	{
+		for (i = 1; i <= NF; ++i)
+			print $i
+	}
+	' <<< "hello"
+	expect=$(cat <<-EOF 
+	h
+	e
+	l
+	l
+	o
+	EOF
+	)
+	[ "$output" == "$expect" ]
+
 
 	# NF -- number of fields
 	run awk ' 
