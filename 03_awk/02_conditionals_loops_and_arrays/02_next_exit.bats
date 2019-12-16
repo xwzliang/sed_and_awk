@@ -4,6 +4,8 @@
 	# The next statement causes the next line of input to be read and then resumes execution at the top of the script.
 	# The exit statement exits the main input loop and passes control to the END rule, if there is one. If the END rule is not defined, or the exit statement is used in the END rule, then the script terminates.
 
+	# gawk provides nextfile. The nextfile statement is similar to next, but it operates at a higher level. When nextfile is executed, the current data file is abandoned, and processing starts over at the top of the script, using the first record of the following file. This is useful when you know that you only need to process part of a file; there's no need to then set up a loop to skip records using next.
+
 	cat <<-EOF > glossary.tmp
 	GIGO	Garbage in, garbage out
 	BASIC	Beginner's All-Purpose Symbolic Instruction Code
