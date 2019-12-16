@@ -7,7 +7,8 @@
 
 	# Awk provides a statement for deleting an element of an array. The syntax is: 
 		# delete array[subscript]
-	# The brackets are requir ed. This statement removes the element indexed by subscript from array. In particular, the in test for subscript will now return false.
+	# The brackets are required. This statement removes the element indexed by subscript from array. In particular, the in test for subscript will now return false.
+	# Use "delete array" to delete all the elements of an array.
 
 	test_string=$(cat <<-EOF 
 	5/11/15
@@ -117,6 +118,29 @@
 	text text U.S. Global Change Research Program (USGCRP) text
 	text National Aeronautic and Space Administration (NASA), text text
 	USGCRP text
+	EOF
+	)
+
+	[ "$output" == "$expect" ]
+
+
+	# If the value of separator is empty string, each character in the original string will become a separate element of the target array.
+	run awk '
+	{
+		arr_size = split($0, char_arr, "")
+		for (i = 1; i <= arr_size; ++i)
+			print char_arr[i]
+		# split array is not an associative array, cannot use following loop
+		# for (index in char_arr)
+		# 	print index
+	}
+	' <<< "hello"
+	expect=$(cat <<-EOF 
+	h
+	e
+	l
+	l
+	o
 	EOF
 	)
 
