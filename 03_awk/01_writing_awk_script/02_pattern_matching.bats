@@ -70,4 +70,17 @@
 	)
 	[ "$output" == "$expect" ]
 
+	# If IGNORECASE is set to a non-zero value, then case distinctions are ignored. This applies to all places where regular expressions are used.
+	run awk '
+	BEGIN { IGNORECASE = 1 }
+	/t/ { print }
+	' <<< "$test_string"
+	expect=$(cat <<-EOF 
+	t
+	4T
+	test print default
+	EOF
+	)
+	[ "$output" == "$expect" ]
+
 }
