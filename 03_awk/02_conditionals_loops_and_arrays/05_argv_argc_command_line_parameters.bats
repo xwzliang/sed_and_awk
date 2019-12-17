@@ -89,4 +89,17 @@
 
 	# Because you can add to and delete from the ARGV array, there is the potential for doing a lot of interesting manipulation. You can place a filename at the end of the ARGV array, for instance, and it will be opened as though it were specified on the command line. Similarly, you can delete a filename from the array and it will never be opened. Note that if you add new elements to ARGV, you should also increment ARGC; awk uses the value of ARGC to know how many elements in ARGV it should process. Thus, simply decrementing ARGC will keep awk from examining the final element in ARGV.
 	# As a special case, if the value of an ARGV element is the empty string (""), awk will skip over it and continue on to the next element.
+
+
+	# ARGIND is set automatically by gawk to be the index in ARGV of the current input file name. This variable gives you a way to track how far along you are in the list of filenames.
+	echo John > 1.tmp
+	echo Phyllis > 2.tmp
+	run awk ' { print "ARGIND: " ARGIND " FILENAME: " FILENAME } ' {1,2}.tmp
+	expect=$(cat <<-EOF 
+	ARGIND: 1 FILENAME: 1.tmp
+	ARGIND: 2 FILENAME: 2.tmp
+	EOF
+	)
+	[ "$output" == "$expect" ]
+
 }
