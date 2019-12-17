@@ -38,6 +38,36 @@
 	)
 	[ "$output" == "$expect" ]
 
+	# gawk has a special variable FIELDWIDTHS can be used to split out data that occurs in fixed-width columns. Such data may or may not have whitespace separating the values of the fields.
+	run awk '
+	BEGIN { FIELDWIDTHS = "3" }
+	{
+		for (i = 1; i <= NF; ++i)
+			print $i
+	}
+	' <<< "hello world"
+	expect=$(cat <<-EOF 
+	hel
+	EOF
+	)
+	[ "$output" == "$expect" ]
+
+	run awk '
+	BEGIN { FIELDWIDTHS = "3 4 5" }
+	{
+		for (i = 1; i <= NF; ++i)
+			print $i
+	}
+	' <<< "hello world"
+	expect=$(cat <<-EOF 
+	hel
+	lo w
+	orld
+	EOF
+	)
+	[ "$output" == "$expect" ]
+	# Assigning a value to FIELDWIDTHS causes gawk to start using it for field splitting. Assigning a value to FS causes gawk to return to the regular field splitting mechanism. Use FS = FS to make this happen without having to save the value of FS in an extra variable.
+
 
 	# NF -- number of fields
 	run awk ' 
