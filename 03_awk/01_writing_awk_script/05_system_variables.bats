@@ -96,6 +96,74 @@
 	)
 	[ "$output" == "$expect" ]
 
+	test_string=$(cat <<-EOF 
+	John Robinson, 696-0987
+	Phyllis Chapman, 879-0900
+	EOF
+	)
+	# gawk sets the variable RT (record terminator) to the actual input text that matched the value of RS.
+	run awk '
+	BEGIN { 
+		RS = "Robinson|Chapman" 
+	}
+	{
+		print "$0 is " $0
+		print "RT is " RT
+	}
+	' <<< "$test_string"
+	expect=$(cat <<-'EOF' 
+	$0 is John 
+	RT is Robinson
+	$0 is , 696-0987
+	Phyllis 
+	RT is Chapman
+	$0 is , 879-0900
+
+	RT is 
+	EOF
+	)
+	# at end of file, RT will be empty
+	[ "$output" == "$expect" ]
+
+	# One of the most common uses of sed is its substitute command (s/old/new/g). By setting RS to the pattern to match, and ORS to the replacement text, a simple print statement can print the unchanged text followed by the replacement text.
+	run awk '
+	BEGIN { 
+		RS = "Robinson|Chapman" 
+		ORS = "Replacement"
+	}
+	{
+		print 
+	}
+	' <<< "$test_string"
+	expect=$(cat <<-EOF 
+	John Replacement, 696-0987
+	Phyllis Replacement, 879-0900
+	Replacement
+	EOF
+	)
+	# OFS will cause not corrent result at the end of file
+	[ "$output" == "$expect" ]
+
+	run awk '
+	BEGIN { 
+		RS = "Robinson|Chapman" 
+		ORS = "Replacement"
+	}
+	{
+		if (RT == "")
+			printf "%s", $0
+		else
+			print
+	}
+	' <<< "$test_string"
+	expect=$(cat <<-EOF 
+	John Replacement, 696-0987
+	Phyllis Replacement, 879-0900
+	EOF
+	)
+	# Use printf when RT is empty (at the end of file) to print $0, this will give us correct result as sed 's///g'
+	[ "$output" == "$expect" ]
+
 
 	# FILENAME -- the file name of the current input file
 	touch test.tmp
