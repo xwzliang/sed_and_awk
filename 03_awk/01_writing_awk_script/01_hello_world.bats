@@ -28,4 +28,8 @@
 	# The END pattern specifies actions that are performed after all input is read.
 	run awk 'END { print "hello world" }' <<< "$test_string"
 	[ "$output" == "hello world" ]
+
+
+	# Shebang for awk script
+	#!/usr/bin/awk -f
 }
