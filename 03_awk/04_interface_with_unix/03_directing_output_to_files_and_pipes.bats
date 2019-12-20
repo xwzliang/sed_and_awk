@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-@test "getline" {
+@test "directing output" {
 	# The output of any print or printf statement can be directed to a file, using the output redirection operators “>” or “>>”.
 	# The filename can be any expression that evaluates to a valid filename. A file is opened by the first use of the redirection operator, and subsequent uses append data to the file. The difference between “>” and “>>” is the same as between the shell redirection operators. A right-angle bracket (“>”) truncates the file when opening it while “>>” preserves whatever the file contains and appends data to it.
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-@test "getline" {
+@test "close" {
 	# The close() function allows you to close open files and pipes. There are a number of reasons you should use it.
 	# You can only have so many pipes open at a time. In order to open as many pipes in a program as you wish, you must use the close() function to close a pipe when you are done with it (ordinarily, when getline retur ns 0 or -1). It takes a single argument, the same expression used to create the pipe. Here's an example:
 	# 	close("who")

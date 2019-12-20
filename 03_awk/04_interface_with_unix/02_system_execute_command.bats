@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-@test "getline" {
+@test "system" {
 	# The system() function executes a command supplied as an expression.It does not, however, make the output of the command available within the program for processing. It returns the exit status of the command that was executed. The script waits for the command to finish before continuing execution.
 
 	run awk '
